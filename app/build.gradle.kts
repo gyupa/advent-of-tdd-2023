@@ -8,9 +8,6 @@
 plugins {
     // Apply the scala Plugin to add support for Scala.
     scala
-
-    // Apply the application plugin to add support for building a CLI application in Java.
-    application
 }
 
 repositories {
@@ -29,6 +26,7 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.scalatest.v2.v13)
     testImplementation(libs.junit.v4.v13.v2.v13)
+    testImplementation(libs.scalamock.v2.v13)
 
     // Need scala-xml at test runtime
     testRuntimeOnly(libs.scala.xml.v2.v13)
@@ -41,7 +39,3 @@ java {
     }
 }
 
-application {
-    // Define the main class for the application.
-    mainClass.set("advent.of.tdd.App")
-}

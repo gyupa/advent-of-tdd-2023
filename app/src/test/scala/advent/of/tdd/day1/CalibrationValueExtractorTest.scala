@@ -25,4 +25,11 @@ class CalibrationValueExtractorTest extends AnyFlatSpec {
     CalibrationValueExtractorImpl.readCalibrationValue("treb7uchet") should be(77)
   }
 
+  it should "be able to extract calibration value if string contains single digits as words" in {
+    CalibrationValueExtractorImpl.readCalibrationValue("trone7ucfivehet") should be(15)
+  }
+
+  it should "be able to extract calibration value if it contains single digits as word" in {
+    CalibrationValueExtractorImpl.readCalibrationValue("trfivehet") should be(55)
+  }
 }

@@ -4,21 +4,6 @@ import scala.collection.immutable.Seq
 
 trait CalibrationValueExtractor {
 
-  /**
-   * Extracts the score from a single line.
-   *
-   * @param calibrationString - The assumption is that it contains at least 1 digit. (InputDataValidator ensures it.)
-   * @return
-   */
-  def readCalibrationValue(calibrationString: String): Int = {
-    //val digits: Seq[Int] = extractDigits(calibrationString)
-    //digits.head * 10 + digits.last
-    extractDigits2(calibrationString)
-  }
-
-  private def extractDigits(calibrationString: String) = {
-    calibrationString.toSeq.filter(_.isDigit).map(_.asDigit)
-  }
 
   private val ReplacementMap: Map[String, String] = Map(
     "one" -> "1",
@@ -33,25 +18,46 @@ trait CalibrationValueExtractor {
   ).withDefault(a => a)
 
 
-  private def extractDigits2(calibrationString: String) = {
-    val firstDigitAsWordOrNumber =
-      InputDataValidatorImpl.ValidDigitStrings.map(
-          digitString => digitString -> calibrationString.indexOf(digitString)
-        ).filter(_._2 > -1)
-        .minBy(_._2)
-        ._1
+  /**
+   * Extracts the score from a single line.
+   *
+   * @param calibrationString - The assumption is that it contains at least 1 digit. (InputDataValidator ensures it.)
+   * @return
+   */
+  def readCalibrationValue(calibrationString: String): Int = {
+    val firstDigitAsInt: Int = extractFirstDigitAndConvertToInt(calibrationString)
+    val lastDigitAsInt: Int = extractLastDigitAndConvertToInt(calibrationString)
+    10 * firstDigitAsInt + lastDigitAsInt
+  }
 
-    val firstDigitAsInt = ReplacementMap(firstDigitAsWordOrNumber).toInt
+  private def extractLastDigitAndConvertToInt(calibrationString: String) = {
+    val lastDigitAsWordOrNumber: String = findLastIndexOfDigit(calibrationString)
+    ReplacementMap(lastDigitAsWordOrNumber).toInt
+  }
 
+  private def extractFirstDigitAndConvertToInt(calibrationString: String) = {
+    val firstDigitAsWordOrNumber: String = findFirstIndexOfDigit(calibrationString)
+    ReplacementMap(firstDigitAsWordOrNumber).toInt
+  }
+
+  private def findLastIndexOfDigit(calibrationString: String) = {
     val lastDigitAsWordOrNumber =
       InputDataValidatorImpl.ValidDigitStrings.map(
           digitString => digitString -> calibrationString.lastIndexOf(digitString)
         ).filter(_._2 > -1)
         .maxBy(_._2)
         ._1
-    val lastDigitAsInt = ReplacementMap(lastDigitAsWordOrNumber).toInt
+    lastDigitAsWordOrNumber
+  }
 
-    10 * firstDigitAsInt + lastDigitAsInt
+  private def findFirstIndexOfDigit(calibrationString: String) = {
+    val firstDigitAsWordOrNumber =
+      InputDataValidatorImpl.ValidDigitStrings.map(
+          digitString => digitString -> calibrationString.indexOf(digitString)
+        ).filter(_._2 > -1)
+        .minBy(_._2)
+        ._1
+    firstDigitAsWordOrNumber
   }
 }
 

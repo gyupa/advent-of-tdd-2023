@@ -15,23 +15,18 @@ class TotalScoreCalculatorTest extends AnyFlatSpec with MockFactory {
 
   "Total score calculation" should "read file and aggregate scores from records" in {
     val fileContents = Seq("a", "b")
-    val transformedContents = Seq("c", "d")
 
     val fileReaderStub = stub[FileReader]
     (fileReaderStub.readLinesFromFile _).when("fn").returns(Right(fileContents))
 
-    val inputDataTransformerStub = stub[InputDataTransformer]
-    (inputDataTransformerStub.replaceNumbersAsWordsWithDigits _).when(fileContents).returns(transformedContents)
-
     val inputDataValidatorStub = stub[InputDataValidator]
-    (inputDataValidatorStub.validateInput _).when(transformedContents).returns(true)
+    (inputDataValidatorStub.validateInput _).when(fileContents).returns(true)
 
     val scoreAggregatorStub = stub[CalibrationValueAggregator]
-    (scoreAggregatorStub.calculateTotalCalibrationScore _).when(transformedContents).returns(1234)
+    (scoreAggregatorStub.calculateTotalCalibrationScore _).when(fileContents).returns(1234)
 
     val sut = TotalScoreCalculator(
       fileReader = fileReaderStub,
-      inputDataTransformer = inputDataTransformerStub,
       inputDataValidator = inputDataValidatorStub,
       calibrationValueAggregator = scoreAggregatorStub
     )
@@ -41,22 +36,17 @@ class TotalScoreCalculatorTest extends AnyFlatSpec with MockFactory {
 
   it should "return error when validation fails" in {
     val fileContents = Seq("a", "b")
-    val transformedContents = Seq("c", "d")
 
     val fileReaderStub = stub[FileReader]
     (fileReaderStub.readLinesFromFile _).when("fn").returns(Right(fileContents))
 
-    val inputDataTransformerStub = stub[InputDataTransformer]
-    (inputDataTransformerStub.replaceNumbersAsWordsWithDigits _).when(fileContents).returns(transformedContents)
-
     val inputDataValidatorStub = stub[InputDataValidator]
-    (inputDataValidatorStub.validateInput _).when(transformedContents).returns(false)
+    (inputDataValidatorStub.validateInput _).when(fileContents).returns(false)
 
     val scoreAggregatorStub = stub[CalibrationValueAggregator]
 
     val sut = TotalScoreCalculator(
       fileReader = fileReaderStub,
-      inputDataTransformer = inputDataTransformerStub,
       inputDataValidator = inputDataValidatorStub,
       calibrationValueAggregator = scoreAggregatorStub
     )
@@ -65,18 +55,14 @@ class TotalScoreCalculatorTest extends AnyFlatSpec with MockFactory {
   }
 
   it should "return error when file read operation fails" in {
-    val fileContents = Seq("a", "b")
-
     val fileReaderStub = stub[FileReader]
     (fileReaderStub.readLinesFromFile _).when("fn").returns(Left("error"))
 
-    val inputDataTransformerStub = stub[InputDataTransformer]
     val inputDataValidatorStub = stub[InputDataValidator]
     val scoreAggregatorStub = stub[CalibrationValueAggregator]
 
     val sut = TotalScoreCalculator(
       fileReader = fileReaderStub,
-      inputDataTransformer = inputDataTransformerStub,
       inputDataValidator = inputDataValidatorStub,
       calibrationValueAggregator = scoreAggregatorStub
     )

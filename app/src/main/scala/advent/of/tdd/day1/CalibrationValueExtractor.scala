@@ -20,28 +20,36 @@ trait CalibrationValueExtractor {
     calibrationString.toSeq.filter(_.isDigit).map(_.asDigit)
   }
 
-  private val digits = Seq(
-    "1", "2", "3", "4", "5", "6", "7", "8", "9",
-    "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"
-  )
+  private val ReplacementMap: Map[String, String] = Map(
+    "one" -> "1",
+    "two" -> "2",
+    "three" -> "3",
+    "four" -> "4",
+    "five" -> "5",
+    "six" -> "6",
+    "seven" -> "7",
+    "eight" -> "8",
+    "nine" -> "9"
+  ).withDefault(a => a)
+
 
   private def extractDigits2(calibrationString: String) = {
     val firstDigitAsWordOrNumber =
-      digits.map(
+      InputDataValidatorImpl.ValidDigitStrings.map(
           digitString => digitString -> calibrationString.indexOf(digitString)
         ).filter(_._2 > -1)
         .minBy(_._2)
         ._1
 
-    val firstDigitAsInt = InputDataTransformerImpl.ReplacementMap(firstDigitAsWordOrNumber).toInt
+    val firstDigitAsInt = ReplacementMap(firstDigitAsWordOrNumber).toInt
 
     val lastDigitAsWordOrNumber =
-      digits.map(
+      InputDataValidatorImpl.ValidDigitStrings.map(
           digitString => digitString -> calibrationString.lastIndexOf(digitString)
         ).filter(_._2 > -1)
         .maxBy(_._2)
         ._1
-    val lastDigitAsInt = InputDataTransformerImpl.ReplacementMap(lastDigitAsWordOrNumber).toInt
+    val lastDigitAsInt = ReplacementMap(lastDigitAsWordOrNumber).toInt
 
     10 * firstDigitAsInt + lastDigitAsInt
   }

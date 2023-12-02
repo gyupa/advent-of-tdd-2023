@@ -7,7 +7,6 @@ object Day1SolutionApp {
   def main(args: Array[String]): Unit = {
     val calculator = TotalScoreCalculator(
       FileReaderImpl,
-      InputDataTransformerImpl,
       InputDataValidatorImpl,
       CalibrationValueAggregator(CalibrationValueExtractorImpl)
     )

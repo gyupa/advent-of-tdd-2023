@@ -13,7 +13,6 @@ class TotalScoreCalculatorIntegrationTest extends AnyFlatSpec {
   "Integration test" should "verify example in task A description" in {
     val calculator = TotalScoreCalculator(
       FileReaderImpl,
-      InputDataTransformerImpl,
       InputDataValidatorImpl,
       CalibrationValueAggregator(CalibrationValueExtractorImpl)
     )
@@ -24,7 +23,6 @@ class TotalScoreCalculatorIntegrationTest extends AnyFlatSpec {
   it should "verify example in task B description" in {
     val calculator = TotalScoreCalculator(
       FileReaderImpl,
-      InputDataTransformerImpl,
       InputDataValidatorImpl,
       CalibrationValueAggregator(CalibrationValueExtractorImpl)
     )

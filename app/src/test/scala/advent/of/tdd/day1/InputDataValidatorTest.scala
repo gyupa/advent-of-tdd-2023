@@ -26,4 +26,9 @@ class InputDataValidatorTest extends AnyFlatSpec {
   it should "return false if it contains line without digits" in {
     InputDataValidatorImpl.validateInput(Seq("s3d4f5", "aaa", "334f")) should be(false)
   }
+
+  it should "return true if line contains digit as word" in {
+    InputDataValidatorImpl.validateInput(Seq("asdffour", "five678")) should be(true)
+  }
+
 }

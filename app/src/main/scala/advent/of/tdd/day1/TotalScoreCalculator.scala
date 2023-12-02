@@ -4,7 +4,6 @@ import advent.of.tdd.utils.FileReader
 
 class TotalScoreCalculator(
                             val fileReader: FileReader,
-                            val inputDataTransformer: InputDataTransformer,
                             val inputDataValidator: InputDataValidator,
                             val calibrationValueAggregator: CalibrationValueAggregator
                           ) {
@@ -13,7 +12,11 @@ class TotalScoreCalculator(
 
     calibrationStringsOrError match {
       case Left(errorMessage) => Left(errorMessage)
-      case Right(calibrationStrings) => Right(calibrationValueAggregator.calculateTotalCalibrationScore(calibrationStrings))
+      case Right(calibrationStrings) =>
+        if (inputDataValidator.validateInput(calibrationStrings))
+          Right(calibrationValueAggregator.calculateTotalCalibrationScore(calibrationStrings))
+        else
+          Left("Invalid input")
     }
   }
 
@@ -22,8 +25,7 @@ class TotalScoreCalculator(
 object TotalScoreCalculator {
   def apply(
              fileReader: FileReader,
-             inputDataTransformer: InputDataTransformer,
              inputDataValidator: InputDataValidator,
              calibrationValueAggregator: CalibrationValueAggregator) =
-    new TotalScoreCalculator(fileReader, inputDataTransformer, inputDataValidator, calibrationValueAggregator)
+    new TotalScoreCalculator(fileReader, inputDataValidator, calibrationValueAggregator)
 }

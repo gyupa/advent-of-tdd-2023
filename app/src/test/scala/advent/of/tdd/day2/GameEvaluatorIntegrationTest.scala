@@ -11,6 +11,6 @@ class GameEvaluatorIntegrationTest extends AnyFlatSpec {
 
   "Game evaluator" should "return the same result as the example" in {
     val evaluator = new GameEvaluator()
-    evaluator.calculateSumOfPossibleGameIds("day2_a_example.txt") should be (8)
+    evaluator.calculateSumOfPossibleGameIds("main/resources/day2_a_example.txt") should be (8)
   }
 }

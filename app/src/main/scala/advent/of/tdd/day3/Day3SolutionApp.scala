@@ -13,6 +13,7 @@ object Day3SolutionApp {
       case Right(fileContents) =>
         println(evaluator.calculateSumFromEngineParts(fileContents))
         println(evaluator.calculateGearRatio(fileContents))
+
     }
 
   }

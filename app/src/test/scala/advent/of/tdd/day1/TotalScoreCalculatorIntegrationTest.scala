@@ -17,7 +17,7 @@ class TotalScoreCalculatorIntegrationTest extends AnyFlatSpec {
       CalibrationValueAggregator(CalibrationValueExtractorImpl)
     )
 
-    calculator.calculateScore("main/resources/day1_a_example.txt").toOption.get should be (142)
+    calculator.calculateScore("src/main/resources/day1_a_example.txt").toOption.get should be (142)
   }
 
   it should "verify example in task B description" in {
@@ -27,6 +27,6 @@ class TotalScoreCalculatorIntegrationTest extends AnyFlatSpec {
       CalibrationValueAggregator(CalibrationValueExtractorImpl)
     )
 
-    calculator.calculateScore("main/resources/day1_b_example.txt").toOption.get should be(281)
+    calculator.calculateScore("src/main/resources/day1_b_example.txt").toOption.get should be(281)
   }
 }

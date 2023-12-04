@@ -14,7 +14,7 @@ class EnginePartEvaluatorIntegrationTest extends AnyFlatSpec {
 
     val sut = new EnginePartEvaluator(new AdjacentCharacterExtractor)
 
-    FileReaderImpl.readLinesFromFile("main/resources/day3_a_example.txt") match {
+    FileReaderImpl.readLinesFromFile("src/main/resources/day3_a_example.txt") match {
       case Left(errorMessage) =>
         fail()
       case Right(fileContents) =>
@@ -26,7 +26,7 @@ class EnginePartEvaluatorIntegrationTest extends AnyFlatSpec {
 
     val sut = new EnginePartEvaluator(new AdjacentCharacterExtractor)
 
-    FileReaderImpl.readLinesFromFile("main/resources/day3_b_example.txt") match {
+    FileReaderImpl.readLinesFromFile("src/main/resources/day3_b_example.txt") match {
       case Left(errorMessage) =>
         fail()
       case Right(fileContents) =>

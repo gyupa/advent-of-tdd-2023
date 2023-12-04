@@ -9,9 +9,13 @@ object Day4SolutionApp {
       case Left(errorMessage) =>
         println(s"Error: $errorMessage")
       case Right(fileContents) =>
-        println(EvaluateCards.calculateTotalScore(fileContents))
+        println(s"solution for part one: " + ScratchCardCollection.extractCollectionFromFile(fileContents).calculateTotalScore)
 
+        val collection = ScratchCardCollection.extractCollectionFromFile(fileContents)
+        collection.addNewCardsByEvaluation
+        println(s"solution for part two: " + collection.calculateTotalNumberOfCards)
     }
   }
+
 
 }

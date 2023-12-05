@@ -1,8 +1,8 @@
 package advent.of.tdd.day5
 
 case class Range(
-                  lowerBound: Int,
-                  length: Int
+                  lowerBound: Long,
+                  length: Long
                 ) {
   private def contains(range: Range): Boolean = {
     lowerBound <= range.lowerBound && upperBound >= range.upperBound

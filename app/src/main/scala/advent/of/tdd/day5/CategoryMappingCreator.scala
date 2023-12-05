@@ -2,7 +2,8 @@ package advent.of.tdd.day5
 
 case class CategoryMapping(
                             name: String,
-                            mappingFunction: Long => Long
+                            mappingFunction: Long => Long,
+                            rangeTransformations: Seq[RangeTransformation]
                           )
 
 object CategoryMappingCreator {
@@ -23,6 +24,15 @@ object CategoryMappingCreator {
           ).map(
             _.applyMapping(sourceCategory)
           ).getOrElse(sourceCategory)
+      },
+      rangeTransformations = {
+        mappingRanges.map {
+          mappingRange =>
+            RangeTransformation(
+              sourceRange = Range(mappingRange.sourceRangeStart, mappingRange.rangeLength),
+              targetRange = Range(mappingRange.targetRangeStart, mappingRange.rangeLength),
+            )
+        }
       }
     )
   }

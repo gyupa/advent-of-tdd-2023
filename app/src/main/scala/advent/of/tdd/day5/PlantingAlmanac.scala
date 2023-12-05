@@ -9,23 +9,14 @@ case class PlantingAlmanac(
 
   def applyMappingOnRange(categoryRange: Range, rangeTransformations: Seq[RangeTransformation]): Seq[Range] = {
     println(s"Apply mapping $rangeTransformations on $categoryRange")
-    if (rangeTransformations.isEmpty)
-      Seq(categoryRange)
-    else {
-      val targetRanges: Seq[Range] = categoryRange.applyTransformation(rangeTransformations.head)
-
-      targetRanges.map(
-        targetRange => applyMappingOnRange(targetRange, rangeTransformations.tail)
-      ).flatten
-      //applyMappingOnRange(seedRange, rangeTransformations.tail, acc ++ seedRange.applyTransformation(rangeTransformations.head))
-    }
+    categoryRange.applyMultipleTransformations(rangeTransformations)
   }
 
-  def lowestLocationForSeedRanges = {
-    seedsRanges.map(getLocationRangesForSeedRange).flatten.map(_.lowerBound).min
+  def lowestLocationForSeedRanges: Long = {
+    seedsRanges.flatMap(getLocationRangesForSeedRange).map(_.lowerBound).min
   }
 
-  def traceSeed(seed: Long) = {
+  def traceSeed(seed: Long): Seq[Range] = {
     getLocationRangesForSeedRange(Range(seed, 1))
   }
 
@@ -41,9 +32,7 @@ case class PlantingAlmanac(
 
   private def applyMapping(ranges: Seq[Range], mappingName: String) = {
     println(s"applying mapping $mappingName")
-    ranges.map(
-      applyMappingOnRange(_, mappingsByName(mappingName).head.rangeTransformations)
-    ).flatten
+    ranges.flatMap(applyMappingOnRange(_, mappingsByName(mappingName).head.rangeTransformations))
   }
 
   val mappingsByName: Map[String, Seq[CategoryMapping]] = categoryMappings.groupBy(_.name)
@@ -73,9 +62,6 @@ object PlantingAlmanac {
         pair => Range(lowerBound = pair.head, length = pair(1))
       )
 
-
-    /*val numberPattern = "(\\d+)".r
-    val seeds = numberPattern.findAllMatchIn(lines.head).map(_.group(1).toLong).toSeq*/
 
     val categoryMappings = splitMappings(lines.tail.tail)
 

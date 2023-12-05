@@ -17,7 +17,7 @@ class RangeTest extends AnyFlatSpec {
         sourceRange = Range(40, 10),
         targetRange = Range(55, 10)
       )
-    ) should be (Seq(sut))
+    ) should be(Seq(sut))
   }
 
   it should "be transformed into single range if transformation source range contains it" in {
@@ -80,6 +80,45 @@ class RangeTest extends AnyFlatSpec {
         Range(lowerBound = 20, length = 1),
         Range(lowerBound = 51, length = 6),
         Range(lowerBound = 27, length = 3)
+      )
+    )
+  }
+
+  it should "calculate intersect properly" in {
+    Range(10, 6).intersect(Range(14, 8)) should be (Some(Range(14, 2)))
+    Range(10, 6).intersect(Range(11, 2)) should be (Some(Range(11, 2)))
+    Range(10, 6).intersect(Range(6, 6)) should be (Some(Range(10, 2)))
+    Range(10, 6).intersect(Range(26, 6)) should be (None)
+  }
+
+  it should "subtract other range properly" in {
+    Range(10, 6).minus(Range(14, 8)) should be(Seq(Range(10, 4)))
+    Range(10, 6).minus(Range(11, 2)) should be(Seq(Range(10, 1), Range(13, 3)))
+    Range(10, 6).minus(Range(6, 6)) should be(Seq(Range(12, 4)))
+    Range(10, 6).minus(Range(26, 6)) should be(Seq(Range(10, 6)))
+    Range(10, 6).minus(Range(1, 20)) should be (Seq())
+    Range(10, 6).minus(Range(10, 6)) should be (Seq())
+  }
+
+  it should "be transformed by multiple transformations properly" in {
+    val sut = Range(lowerBound = 20, length = 10)
+
+    sut.applyMultipleTransformations(
+      Seq(
+        RangeTransformation(
+          sourceRange = Range(22, 3),
+          targetRange = Range(25, 3)
+        ),
+        RangeTransformation(
+          sourceRange = Range(25, 5),
+          targetRange = Range(8, 5)
+        )
+      )
+    ) should be(
+      Seq(
+        Range(lowerBound = 20, length = 2),
+        Range(lowerBound = 25, length = 3),
+        Range(lowerBound = 8, length = 5)
       )
     )
   }

@@ -22,24 +22,13 @@ class PlantingAlmanacTest extends AnyFlatSpec {
     }
   }
 
-  it should "calculate lowest locates even with seed ranges" in {
-    FileReaderImpl.readLinesFromFile("src/main/resources/day5_example.txt").map {
-      lines =>
-        val almanac = PlantingAlmanac.readFromLines(lines)
-
-        almanac.getLocationRangesForSeedRange(
-          Range(79, 14)
-        ) should be(Seq(Range(82, 3), Range(85, 8), Range(56, 3)))
-    }
-  }
-
   it should "return the lowest locate correctly based on the example" in {
     FileReaderImpl.readLinesFromFile("src/main/resources/day5_example.txt").map {
       lines =>
         val almanac = PlantingAlmanac.readFromLines(lines)
         almanac.traceSeed(82)
 
-        //almanac.lowestLocationForSeedRanges should be (46)
+        almanac.lowestLocationForSeedRanges should be (46)
     }
   }
 }

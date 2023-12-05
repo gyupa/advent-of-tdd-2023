@@ -12,9 +12,7 @@ object Day5SolutionApp {
         val pa = PlantingAlmanac.readFromLines(fileContents)
 
         println(pa.lowestLocationForSeedRanges)
-      //val closestSeedWithLocation = pa.seeds.map(seed => seed -> pa.getLocationForSeed(seed)).minBy(_._2)
-      //println(closestSeedWithLocation)
-      // 32282200 too low
+
     }
   }
 }

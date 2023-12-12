@@ -48,6 +48,9 @@ class SpringRowTest extends AnyFlatSpec {
     SpringRow("#???.??", Seq(2)).getPotentialCombinations should be(1)
     SpringRow("#???.??", Seq(2, 1)).getPotentialCombinations should be(3)
     SpringRow(".?#??.??", Seq(2, 1)).getPotentialCombinations should be(5)
+    SpringRow("??.??", Seq(1)).getPotentialCombinations should be(4)
+    SpringRow("??.??#.", Seq(1)).getPotentialCombinations should be(1)
+
   }
 
 }

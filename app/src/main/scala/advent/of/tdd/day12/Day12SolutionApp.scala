@@ -11,6 +11,7 @@ object Day12SolutionApp {
       case Right(fileContents) =>
         println(SpringMap.readFromLines(fileContents).calculateSumOfCombinations)
         // 7735 -> too high
+      // 7879 -> too high
     }
 
   }

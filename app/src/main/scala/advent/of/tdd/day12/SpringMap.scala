@@ -7,6 +7,15 @@ case class SpringMap(
     springRows.map(_.getPotentialCombinations).sum
   }
 
+  def calculateSumOfUnfoldedCombinations: Long = {
+    springRows.map(_.unfold).map{
+      unfoldedRow =>
+        val combinations = unfoldedRow.getPotentialCombinations
+        println(s"Found $combinations combinations")
+        combinations.toLong
+    }.sum
+  }
+
 }
 
 object SpringMap {

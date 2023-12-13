@@ -5,27 +5,34 @@ case class SpringRow(
                       damagedSprings: Seq[Int]
                     ) {
 
+  def unfold: SpringRow = {
+    SpringRow(
+      rowString = (rowString + "?") * 4 + rowString,
+      damagedSprings = damagedSprings ++ damagedSprings ++ damagedSprings ++ damagedSprings ++ damagedSprings
+    )
+  }
+
   def getPotentialCombinations: Int = {
     applyDamagedSpringsOnString(rowString, damagedSprings, 0, 0)
   }
 
   private def applyDamagedSpringsOnString(originalString: String, remainingDamagedSprings: Seq[Int], currentNumberOfCombinations: Int, level: Int): Int = {
     if (remainingDamagedSprings.isEmpty && originalString.contains('#')) {
-      println(" " * level + "NOT a solution! (no more replacement to apply and remaining string contains #)")
+      //println(" " * level + "NOT a solution! (no more replacement to apply and remaining string contains #)")
       0
     } else if (remainingDamagedSprings.isEmpty) {
-      println(" " * level + "Found solution")
+      //println(" " * level + "Found solution")
       1
     } else {
       val currentDamagedSprings: String = "#" * remainingDamagedSprings.head
       val substringWhereCurrentDamagedStringNeedsToBePlaced = originalString.dropRight(
         remainingDamagedSprings.tail.sum + remainingDamagedSprings.tail.size
       )
-      println(" " * level + s"Searching for $currentDamagedSprings in $substringWhereCurrentDamagedStringNeedsToBePlaced, whole: $originalString")
+      //println(" " * level + s"Searching for $currentDamagedSprings in $substringWhereCurrentDamagedStringNeedsToBePlaced, whole: $originalString")
 
       substringWhereCurrentDamagedStringNeedsToBePlaced.indices.filter {
         (i: Int) =>
-          println(" " * level + s"str: $substringWhereCurrentDamagedStringNeedsToBePlaced, index: $i, length: ${currentDamagedSprings.length}")
+          //println(" " * level + s"str: $substringWhereCurrentDamagedStringNeedsToBePlaced, index: $i, length: ${currentDamagedSprings.length}")
           (i + currentDamagedSprings.length) <= substringWhereCurrentDamagedStringNeedsToBePlaced.length &&
             substringWhereCurrentDamagedStringNeedsToBePlaced.substring(i, i + currentDamagedSprings.length).forall(Seq('?', '#').contains(_)) &&
             substringWhereCurrentDamagedStringNeedsToBePlaced.substring(0, i).forall(Seq('?', '.').contains(_)) &&
@@ -33,7 +40,7 @@ case class SpringRow(
               Seq('?', '.').contains(originalString(i + currentDamagedSprings.length)))
       }.map {
         indexThatFits =>
-          println(" " * level + s"Found index $indexThatFits that fits")
+          //println(" " * level + s"Found index $indexThatFits that fits")
 
           applyDamagedSpringsOnString(
             originalString = originalString.drop(indexThatFits + currentDamagedSprings.length + 1),

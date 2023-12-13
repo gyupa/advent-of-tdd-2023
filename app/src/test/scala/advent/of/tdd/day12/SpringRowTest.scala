@@ -50,7 +50,12 @@ class SpringRowTest extends AnyFlatSpec {
     SpringRow(".?#??.??", Seq(2, 1)).getPotentialCombinations should be(5)
     SpringRow("??.??", Seq(1)).getPotentialCombinations should be(4)
     SpringRow("??.??#.", Seq(1)).getPotentialCombinations should be(1)
+  }
 
+  it should "unfold 1st row" in {
+    SpringRow("???.###", Seq(1, 1, 3)).unfold should be(
+      SpringRow("???.###????.###????.###????.###????.###", Seq(1,1,3,1,1,3,1,1,3,1,1,3,1,1,3))
+    )
   }
 
 }

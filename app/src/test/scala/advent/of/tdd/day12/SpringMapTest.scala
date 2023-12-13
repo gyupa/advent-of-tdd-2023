@@ -9,7 +9,7 @@ import org.scalatestplus.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class SpringMapTest extends AnyFlatSpec {
 
-  val fileContents =
+  private val fileContents =
     Seq(
       "???.### 1,1,3",
       ".??..??...?##. 1,1,3",
@@ -36,5 +36,9 @@ class SpringMapTest extends AnyFlatSpec {
 
   it should "calculate the sum properly" in {
     SpringMap.readFromLines(fileContents).calculateSumOfCombinations should be (21)
+  }
+
+  it should "calculate unfolded sum properly" in {
+    SpringMap.readFromLines(fileContents).calculateSumOfUnfoldedCombinations should be(525152)
   }
 }

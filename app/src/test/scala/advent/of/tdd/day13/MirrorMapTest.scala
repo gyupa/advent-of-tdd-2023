@@ -130,4 +130,14 @@ class MirrorMapTest extends AnyFlatSpec {
         MirrorMap.readFromLines(fileContents).calculateTotalScoreOfMirrors should be(400)
     }
   }
+
+  it should "calculate example properly with broken mirrors" in {
+    FileReaderImpl.readLinesFromFile("src/main/resources/day13_example1.txt") match {
+      case Left(errorMessage) =>
+        println(s"Error: $errorMessage")
+        fail()
+      case Right(fileContents) =>
+        MirrorMap.readFromLines(fileContents).calculateRepairedTotalScoreOfMirrors should be(300)
+    }
+  }
 }

@@ -18,7 +18,8 @@ object Day13SolutionApp {
               println()
               println(mirrorMapAsString)
               val lines: Seq[String] = mirrorMapAsString.split("\r\n").toSeq
-              val score = MirrorMap.readFromLines(lines).calculateTotalScoreOfMirrors
+              //val score = MirrorMap.readFromLines(lines).calculateTotalScoreOfMirrors
+              val score = MirrorMap.readFromLines(lines).calculateRepairedTotalScoreOfMirrors
               println(s"score: $score")
               score
           }

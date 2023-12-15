@@ -39,6 +39,7 @@ class SpringMapTest extends AnyFlatSpec {
   }
 
   it should "calculate unfolded sum properly" in {
-    SpringMap.readFromLines(fileContents).calculateSumOfUnfoldedCombinations should be(525152)
+    SpringMap.readFromLines(fileContents).calculateSumOfUnfoldedCombinations() should be(525152)
   }
+
 }

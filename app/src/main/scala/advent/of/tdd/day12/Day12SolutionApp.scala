@@ -9,8 +9,10 @@ object Day12SolutionApp {
       case Left(errorMessage) =>
         println(s"Error: $errorMessage")
       case Right(fileContents) =>
-        println(SpringMap.readFromLines(fileContents).calculateSumOfUnfoldedCombinations)
+        //println(SpringMap.readFromLines(fileContents).calculateSumOfCombinations)
+        println(SpringMap.readFromLines(fileContents).calculateSumOfUnfoldedCombinations())
         // 100,000,000,000 -> too low
+        // 16,473,413,272,490 -> too low
     }
 
   }

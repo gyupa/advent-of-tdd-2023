@@ -5,18 +5,18 @@ case class SpringRow(
                       damagedSprings: Seq[Int]
                     ) {
 
-  def unfold: SpringRow = {
+  def unfold(times: Int = 5): SpringRow = {
     SpringRow(
-      rowString = (rowString + "?") * 4 + rowString,
-      damagedSprings = damagedSprings ++ damagedSprings ++ damagedSprings ++ damagedSprings ++ damagedSprings
+      rowString = (rowString + "?") * (times - 1) + rowString,
+      damagedSprings = (1 to times).flatMap(_ => damagedSprings)
     )
   }
 
-  def getPotentialCombinations: Int = {
+  def getPotentialCombinations: Long = {
     applyDamagedSpringsOnString(rowString, damagedSprings, 0, 0)
   }
 
-  private def applyDamagedSpringsOnString(originalString: String, remainingDamagedSprings: Seq[Int], currentNumberOfCombinations: Int, level: Int): Int = {
+  private def applyDamagedSpringsOnString(originalString: String, remainingDamagedSprings: Seq[Int], currentNumberOfCombinations: Long, level: Int): Int = {
     if (remainingDamagedSprings.isEmpty && originalString.contains('#')) {
       //println(" " * level + "NOT a solution! (no more replacement to apply and remaining string contains #)")
       0

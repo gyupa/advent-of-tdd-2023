@@ -25,8 +25,8 @@ class MatrixTest extends AnyFlatSpec {
 
   it should "return elements properly" in {
     val sut = Matrix(rows)
-    sut(2, 5) should be('d')
-    sut(1, 1) should be('h')
+    sut(1, 4) should be('d')
+    sut(0, 0) should be('h')
   }
 
   it should "return rows and columns properly" in {

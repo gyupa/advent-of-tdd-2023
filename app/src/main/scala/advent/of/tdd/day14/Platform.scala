@@ -2,59 +2,64 @@ package advent.of.tdd.day14
 
 import advent.of.tdd.utils.Matrix
 
+import scala.annotation.tailrec
+
 case class Platform(
                      matrix: Matrix[Char]
                    ) {
-  def calculateScore: Int = {
-    //matrix.columns.head.zipWithIndex.filter(_._1 == '0').map(pair => (matrix.numberOfRows - pair._2)).sum
-    matrix.columns.map {
-      column =>
-        val roundedRockIndices: Seq[Int] = column.zipWithIndex.filter(_._1 == 'O').map(_._2)
-        val cubeShapedRockIndices: Seq[Int] = column.zipWithIndex.filter(_._1 == '#').map(_._2)
-        println(s"new column: $column")
-        println(s"  round: $roundedRockIndices, cube: $cubeShapedRockIndices")
-
-        val scoreBeforeLastCube = cubeShapedRockIndices.indices.map(
-          indexofCurrentCube => {
-            val countRoundedFrom = if (indexofCurrentCube == 0) 0 else cubeShapedRockIndices(indexofCurrentCube - 1) + 1
-            val countRoundedTo = cubeShapedRockIndices(indexofCurrentCube)
-            println(s"  from: $countRoundedFrom, to: $countRoundedTo")
-            val numRounded = roundedRockIndices.count(index => index >= countRoundedFrom && index < countRoundedTo)
-            val maxScore =
-              if (indexofCurrentCube == 0)
-                column.size
-              else
-                column.size - cubeShapedRockIndices(indexofCurrentCube - 1) - 1
-            println(s"  numrounded: $numRounded, maxscore: $maxScore")
-            (0 until numRounded).map(maxScore - _).sum
-          }
-        ).sum
-
-        val scoreAfterLastCube = {
-          val numberOfRoundInTheEnd = roundedRockIndices.count(_ > cubeShapedRockIndices.lastOption.getOrElse(0))
-          val maxScore =
-            if (cubeShapedRockIndices.isEmpty)
-              matrix.columns.head.size
-            else
-              matrix.columns.head.size - cubeShapedRockIndices.last - 1
-          (0 until numberOfRoundInTheEnd).map(maxScore - _).sum
-        }
-
-        println(s"  score before last cube: $scoreBeforeLastCube, score after: $scoreAfterLastCube, total: ${scoreBeforeLastCube + scoreAfterLastCube}")
-        scoreBeforeLastCube + scoreAfterLastCube
-    }.sum
+  val roundedRockPositions: Set[(Int, Int)] = {
+    matrix.rows.indices.flatMap(index => matrix.rows(index).zipWithIndex.filter(_._1 == 'O').map(pair => (index, pair._2))).toSet
   }
+
+  private def rollRoundedToTheLeft(sequence: Seq[Char]): Seq[Char] = {
+    getNewSequenceRecursively(sequence, Seq.empty)
+  }
+
+  @tailrec
+  private def getNewSequenceRecursively(remainingSequence: Seq[Char], currentOutput: Seq[Char]): Seq[Char] = {
+    if (remainingSequence.isEmpty)
+      currentOutput
+    else {
+      val nextRoundRockIndex: Int = remainingSequence.indexOf('O')
+      val nextCubeRockIndex: Int = remainingSequence.indexOf('#')
+      val (newCharacter, remSeq) =
+        if (nextRoundRockIndex == -1)
+          (remainingSequence.head, remainingSequence.tail)
+        else if (nextCubeRockIndex == -1)
+          ('O', remainingSequence.zipWithIndex.filterNot(_._2 == nextRoundRockIndex).map(_._1))
+        else if (nextRoundRockIndex < nextCubeRockIndex)
+          ('O', remainingSequence.zipWithIndex.filterNot(_._2 == nextRoundRockIndex).map(_._1))
+        else
+          (remainingSequence.head, remainingSequence.tail)
+      getNewSequenceRecursively(remSeq, currentOutput :+ newCharacter)
+    }
+  }
+
+  def rollNorth: Platform = {
+    println(matrix)
+    println()
+    val newMatrix = Matrix(Matrix.columnsToRows(matrix.columns.map(rollRoundedToTheLeft)))
+    println(newMatrix)
+    Platform(newMatrix)
+  }
+
+  def calculateScore: Int = {
+    matrix.rows.indices.map(index => matrix.rows(index).count(_ == 'O') * (matrix.numberOfRows - index)).sum
+  }
+
 
 }
 
 object Platform {
+
   def readFromLines(lines: Seq[String]): Platform = {
     val matrix =
       Matrix(
         lines.map(line => line.indices.map(line(_)))
       )
 
-    println(matrix)
     Platform(matrix)
   }
+
+
 }

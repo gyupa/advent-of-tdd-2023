@@ -33,7 +33,7 @@ class PlatformTest extends AnyFlatSpec {
       )
     )
 
-    Platform(matrix).calculateScore should be(7)
+    Platform(matrix).rollNorth.calculateScore should be(7)
   }
 
   it should "calculate score when no rounded between cubes" in {
@@ -52,7 +52,7 @@ class PlatformTest extends AnyFlatSpec {
       )
     )
 
-    Platform(matrix).calculateScore should be(7)
+    Platform(matrix).rollNorth.calculateScore should be(7)
   }
 
   it should "calculate multiple columns correctly" in {
@@ -66,7 +66,25 @@ class PlatformTest extends AnyFlatSpec {
       )
     )
 
-    Platform(matrix).calculateScore should be(14)
+    Platform(matrix).rollNorth.calculateScore should be(14)
+  }
+
+  it should "find rounded positions" in {
+    val matrix = Matrix(
+      Seq(
+        Seq('.', '#'),
+        Seq('O', 'O'),
+        Seq('#', '.'),
+        Seq('O', '.'),
+        Seq('O', 'O')
+      )
+    )
+
+    Platform(matrix).roundedRockPositions should be(
+      Set(
+        (1, 0), (1, 1), (3, 0), (4, 0), (4, 1)
+      )
+    )
   }
 
   it should "calculate example correctly" in {
@@ -76,7 +94,7 @@ class PlatformTest extends AnyFlatSpec {
         println(s"Error: $errorMessage")
         fail()
       case Right(fileContents) =>
-        Platform.readFromLines(fileContents).calculateScore should be (136)
+        Platform.readFromLines(fileContents).rollNorth.calculateScore should be(136)
     }
   }
 }

@@ -9,7 +9,7 @@ object Day14SolutionApp {
       case Left(errorMessage) =>
         println(s"Error: $errorMessage")
       case Right(fileContents) =>
-        println(Platform.readFromLines(lines = fileContents).calculateScore)
+        println(Platform.readFromLines(lines = fileContents).rollNorth.calculateScore)
     }
 
   }

@@ -97,4 +97,18 @@ class PlatformTest extends AnyFlatSpec {
         Platform.readFromLines(fileContents).rollNorth.calculateScore should be(136)
     }
   }
+
+  it should "calculate example correctly with rolling" in {
+
+    FileReaderImpl.readLinesFromFile("src/main/resources/day14_example.txt") match {
+      case Left(errorMessage) =>
+        println(s"Error: $errorMessage")
+        fail()
+      case Right(fileContents) =>
+        val originalPlatform = Platform.readFromLines(fileContents)
+        originalPlatform.roll(1).calculateScore should be(87)
+        originalPlatform.roll(2).calculateScore should be(69)
+        //TODO: fix this properly: originalPlatform.roll(1000000).calculateScore should be(64)
+    }
+  }
 }

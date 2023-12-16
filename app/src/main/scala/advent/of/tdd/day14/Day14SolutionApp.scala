@@ -10,6 +10,10 @@ object Day14SolutionApp {
         println(s"Error: $errorMessage")
       case Right(fileContents) =>
         println(Platform.readFromLines(lines = fileContents).rollNorth.calculateScore)
+        println(Platform.readFromLines(lines = fileContents).roll(10000).calculateScore)
+
+        // 105602->too low
+      // 105607 -> too high
     }
 
   }

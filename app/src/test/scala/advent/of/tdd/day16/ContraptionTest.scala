@@ -153,16 +153,21 @@ class ContraptionTest extends AnyFlatSpec {
     Contraption(matrix).findCoveredTiles should be (46)
   }
 
-  /*it should "enable beam go through through empty space" in {
+  it should "work with example when beam can start from any direction" in {
     val matrix = Matrix(
       Seq(
-        Seq('.', '\\', '.'),
-        Seq('.', '.', '.')
+        Seq('.', '|', '.', '.', '.', '\\', '.', '.', '.', '.'),
+        Seq('|', '.', '-', '.', '\\', '.', '.', '.', '.', '.'),
+        Seq('.', '.', '.', '.', '.', '|', '-', '.', '.', '.'),
+        Seq('.', '.', '.', '.', '.', '.', '.', '.', '|', '.'),
+        Seq('.', '.', '.', '.', '.', '.', '.', '.', '.', '.'),
+        Seq('.', '.', '.', '.', '.', '.', '.', '.', '.', '\\'),
+        Seq('.', '.', '.', '.', '/', '.', '\\', '\\', '.', '.'),
+        Seq('.', '-', '.', '-', '/', '.', '.', '|', '.', '.'),
+        Seq('.', '|', '.', '.', '.', '.', '-', '|', '.', '\\'),
+        Seq('.', '.', '/', '/', '.', '|', '.', '.', '.', '.')
       )
     )
-
-    Contraption(matrix).findRoutes should be(
-      Seq((0, 0), (0, 1), (0, 2))
-    )
-  }*/
+    Contraption(matrix).findMaxCoveredTilesIfBeamCanStartFromAnyWhere should be(51)
+  }
 }

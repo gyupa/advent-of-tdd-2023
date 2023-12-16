@@ -9,21 +9,44 @@ import scala.annotation.tailrec
 case class Contraption(
                         area: Matrix[Char]
                       ) {
+
   private type Position = (Int, Int)
   private type Route = Seq[(Direction.Value, Position)]
 
   def findCoveredTiles: Int = {
     val routes: Seq[Route] = findRoutesRecursively(Seq(Seq((Right, (0, 0)))), Seq.empty, Set((Right, (0, 0))), 1)
+    findCoveredTilesForRoutes(routes)
+  }
+
+  private def findCoveredTilesForRoutes(routes: Seq[Route]): Int = {
     val positions: Seq[(Int, Int)] = routes.flatMap(route => route.map(_._2))
     positions.toSet.size
   }
 
+  def findMaxCoveredTilesIfBeamCanStartFromAnyWhere: Int = {
+    val startPositionsWithDirections: Seq[(Value, (Int, Int))] = {
+      val fromTop = area.rows.head.indices.map(index => (Down, (0, index)))
+      val fromBottom = area.rows.head.indices.map(index => (Up, (area.numberOfRows - 1, index)))
+      val fromLeft = area.columns.head.indices.map(index => (Right, (index, 0)))
+      val fromRight = area.columns.head.indices.map(index => (Left, (index, area.numberOfColumns - 1)))
+      fromTop ++ fromBottom ++ fromLeft ++ fromRight
+    }
+
+    val coveredTilesForEachRoute: Seq[Int] =
+      startPositionsWithDirections.map {
+        startPositionWithDirection =>
+          val routes: Seq[Route] = findRoutesRecursively(Seq(Seq(startPositionWithDirection)), Seq.empty, Set(startPositionWithDirection), 1)
+          findCoveredTilesForRoutes(routes)
+      }
+    coveredTilesForEachRoute.max
+  }
+
   @tailrec
   private def findRoutesRecursively(
-                                      currentRoutes: Seq[Route],
-                                      completedRoutes: Seq[Route],
-                                      tilesAndDirectionsCovered: Set[(Direction.Value, (Int, Int))],
-                                      iteration: Long): Seq[Route] = {
+                                     currentRoutes: Seq[Route],
+                                     completedRoutes: Seq[Route],
+                                     tilesAndDirectionsCovered: Set[(Direction.Value, (Int, Int))],
+                                     iteration: Long): Seq[Route] = {
     if (currentRoutes.isEmpty) {
       completedRoutes
     } else {

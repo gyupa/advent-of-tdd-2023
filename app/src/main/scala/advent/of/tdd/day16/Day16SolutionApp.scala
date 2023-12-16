@@ -11,6 +11,7 @@ object Day16SolutionApp {
       case Right(fileContents) =>
         println("hello")
         println(Contraption.readFromLines(fileContents).findCoveredTiles)
+        println("findMaxCoveredTilesIfBeamCanStartFromAnyWhere:" + Contraption.readFromLines(fileContents).findMaxCoveredTilesIfBeamCanStartFromAnyWhere)
 
     }
   }
